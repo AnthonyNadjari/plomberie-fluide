@@ -17,15 +17,15 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 20%;
 
-    /* Bleu professionnel pour le branding */
-    --primary: 221 83% 53%;
+    /* Bleu acier moderne et professionnel */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 221 83% 40%;
+    --primary-dark: 217 91% 50%;
     
-    /* Orange chaleureux pour les CTA */
-    --accent: 24 95% 53%;
+    /* Orange énergique pour les accents */
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 24 95% 45%;
+    --accent-hover: 25 95% 45%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 220 15% 20%;
@@ -38,13 +38,13 @@ All colors MUST be HSL.
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 221 83% 53%;
+    --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
     /* Design tokens spécifiques */
-    --hero-gradient-start: 221 83% 53%;
-    --hero-gradient-end: 221 83% 40%;
+    --hero-gradient-start: 217 91% 60%;
+    --hero-gradient-end: 217 91% 50%;
     
     --section-spacing: 6rem;
     --container-padding: 1.5rem;
@@ -78,13 +78,13 @@ All colors MUST be HSL.
     --popover: 220 15% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 221 83% 53%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 221 83% 45%;
+    --primary-dark: 217 91% 50%;
 
-    --accent: 24 95% 53%;
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 24 95% 60%;
+    --accent-hover: 25 95% 45%;
 
     --secondary: 220 15% 18%;
     --secondary-foreground: 0 0% 98%;
@@ -97,7 +97,7 @@ All colors MUST be HSL.
 
     --border: 220 15% 20%;
     --input: 220 15% 20%;
-    --ring: 221 83% 53%;
+    --ring: 217 91% 60%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
