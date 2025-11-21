@@ -9,6 +9,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
 import { fr } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const Booking = () => {
   const [date, setDate] = useState<Date>();
@@ -81,11 +82,17 @@ const Booking = () => {
     }
   };
 
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+  const { ref: formRef, isVisible: formVisible } = useScrollReveal();
+
   return (
     <section id="reservation" className="py-24 bg-gradient-to-b from-background via-muted/20 to-background">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+        <div 
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
             Réserver un rendez-vous
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -93,11 +100,14 @@ const Booking = () => {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto">
+        <div 
+          ref={formRef}
+          className={`max-w-5xl mx-auto transition-all duration-700 delay-200 ${formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Calendar Section */}
-              <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300 animate-slide-up">
+              <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 bg-card/50 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <CalendarIcon className="w-5 h-5 text-primary" />
@@ -119,7 +129,7 @@ const Booking = () => {
 
               {/* Form Section */}
               <div className="space-y-6">
-                <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300 animate-slide-up">
+                <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 bg-card/50 backdrop-blur-sm">
                   <CardHeader>
                     <CardTitle>Vos informations</CardTitle>
                     <CardDescription>Remplissez le formulaire de contact</CardDescription>

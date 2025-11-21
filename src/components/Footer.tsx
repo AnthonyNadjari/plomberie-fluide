@@ -5,7 +5,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white border-t border-primary/20">
       <div className="container mx-auto px-6 py-12">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
@@ -20,12 +20,12 @@ const Footer = () => {
           <div>
             <h3 className="font-bold text-lg mb-4">Contact</h3>
             <div className="space-y-3">
-              <a href="tel:+33612345678" className="flex items-center space-x-2 text-slate-300 hover:text-primary transition-colors">
-                <Phone className="w-4 h-4" />
+              <a href="tel:+33612345678" className="flex items-center space-x-2 text-slate-300 hover:text-primary transition-all duration-300 group">
+                <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span>06 12 34 56 78</span>
               </a>
-              <a href="mailto:contact@plombipro.fr" className="flex items-center space-x-2 text-slate-300 hover:text-primary transition-colors">
-                <Mail className="w-4 h-4" />
+              <a href="mailto:contact@plombipro.fr" className="flex items-center space-x-2 text-slate-300 hover:text-primary transition-all duration-300 group">
+                <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span>contact@plombipro.fr</span>
               </a>
               <div className="flex items-start space-x-2 text-slate-300">

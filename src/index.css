@@ -17,15 +17,15 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 20%;
 
-    /* Bleu acier moderne et professionnel */
-    --primary: 217 91% 60%;
+    /* Bleu acier moderne et professionnel - Plus vibrant */
+    --primary: 217 91% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 217 91% 50%;
+    --primary-dark: 217 91% 55%;
     
-    /* Orange énergique pour les accents */
-    --accent: 25 95% 53%;
+    /* Orange énergique pour les accents - Plus saturé */
+    --accent: 25 95% 58%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 25 95% 45%;
+    --accent-hover: 25 95% 50%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 220 15% 20%;
@@ -117,5 +117,12 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
   }
 }

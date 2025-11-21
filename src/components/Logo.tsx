@@ -20,16 +20,17 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
   };
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
-      <div className={`${sizeClasses[size]} bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg relative group hover:shadow-xl transition-all duration-300`}>
+    <div className={`flex items-center space-x-3 ${className}`}>
+      <div className={`${sizeClasses[size]} bg-gradient-to-br from-primary via-primary/90 to-accent rounded-xl flex items-center justify-center shadow-xl shadow-primary/30 relative group hover:shadow-2xl hover:shadow-primary/40 hover:scale-110 transition-all duration-300 overflow-hidden`}>
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
         <Wrench 
-          className={`w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-primary-foreground`}
+          className={`w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-white relative z-10 group-hover:rotate-12 transition-transform duration-300`}
           style={{ transform: 'rotate(15deg)' }}
         />
-        <div className="absolute inset-0 bg-primary/20 rounded-lg animate-pulse-slow"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/10 to-accent/0 animate-shimmer"></div>
       </div>
       {showText && (
-        <span className={`${textSizeClasses[size]} font-bold text-foreground bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text`}>
+        <span className={`${textSizeClasses[size]} font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient`}>
           PlombiPro
         </span>
       )}

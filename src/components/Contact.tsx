@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -59,11 +60,18 @@ const Contact = () => {
     }
   };
 
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+  const { ref: formRef, isVisible: formVisible } = useScrollReveal();
+  const { ref: infoRef, isVisible: infoVisible } = useScrollReveal();
+
   return (
     <section id="contact" className="py-24 bg-gradient-to-b from-background via-muted/20 to-background">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+        <div 
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
             Nous contacter
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -72,8 +80,11 @@ const Contact = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="lg:col-span-2">
-            <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300 animate-slide-up">
+          <div 
+            ref={formRef}
+            className={`lg:col-span-2 transition-all duration-700 delay-200 ${formVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+          >
+            <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 bg-card/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Envoyez-nous un message</CardTitle>
                 <CardDescription>Nous vous répondrons rapidement</CardDescription>
@@ -127,12 +138,15 @@ const Contact = () => {
             </Card>
           </div>
 
-          <div className="space-y-6">
-            <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-slide-in">
+          <div 
+            ref={infoRef}
+            className={`space-y-6 transition-all duration-700 delay-300 ${infoVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}
+          >
+            <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:scale-105 group bg-card/50 backdrop-blur-sm">
               <CardContent className="pt-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
-                    <Phone className="w-6 h-6 text-primary" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <Phone className="w-6 h-6 text-primary group-hover:text-accent transition-colors" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Téléphone</h3>
@@ -145,11 +159,11 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-slide-in">
+            <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:scale-105 group bg-card/50 backdrop-blur-sm">
               <CardContent className="pt-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
-                    <Mail className="w-6 h-6 text-primary" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <Mail className="w-6 h-6 text-primary group-hover:text-accent transition-colors" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Email</h3>
@@ -162,11 +176,11 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-slide-in">
+            <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:scale-105 group bg-card/50 backdrop-blur-sm">
               <CardContent className="pt-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
-                    <MapPin className="w-6 h-6 text-primary" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <MapPin className="w-6 h-6 text-primary group-hover:text-accent transition-colors" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Adresse</h3>
@@ -182,8 +196,8 @@ const Contact = () => {
         </div>
 
         {/* Google Maps Section */}
-        <div className="mt-16 max-w-6xl mx-auto animate-fade-in">
-          <Card className="border-border shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="mt-16 max-w-6xl mx-auto">
+          <Card className="border-border shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 bg-card/50 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Notre localisation</CardTitle>
               <CardDescription>Trouvez-nous facilement</CardDescription>
