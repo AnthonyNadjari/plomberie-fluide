@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone, Shield, Clock, Award, Star, Zap, CheckCircle2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { reviewStats } from "@/config/reviews";
 
 // Animated counter component
 const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number; duration?: number; suffix?: string }) => {
@@ -193,7 +194,7 @@ const Hero = () => {
               {[
                 { icon: Shield, title: "Garantie 2 ans", subtitle: "Sur tous travaux" },
                 { icon: Clock, title: "Intervention < 1h", subtitle: "En urgence" },
-                { icon: Star, title: "5 étoiles", subtitle: "Avis clients" }
+                { icon: Star, title: `${reviewStats.averageRating} étoiles`, subtitle: `${reviewStats.totalReviews} avis` }
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -282,8 +283,8 @@ const Hero = () => {
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                   ))}
                 </div>
-                <span className="font-semibold font-body text-sm">4.9/5</span>
-                <span className="text-white/60 text-sm font-body">(127 avis)</span>
+                <span className="font-semibold font-body text-sm">{reviewStats.averageRating}/5</span>
+                <span className="text-white/60 text-sm font-body">({reviewStats.totalReviews} avis)</span>
               </div>
             </div>
           </div>

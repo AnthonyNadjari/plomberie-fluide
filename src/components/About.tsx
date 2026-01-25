@@ -1,5 +1,7 @@
 import { Award, Clock, Shield, Users, CheckCircle, Star, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { manualReviews, googleReviewsConfig } from "@/config/reviews";
+import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
 
 // Animated counter hook
 const useCounter = (end: number, duration: number = 2000, isVisible: boolean) => {
@@ -165,33 +167,42 @@ const About = () => {
               </div>
 
               <div className="relative z-10">
-                <p className="text-lg font-body mb-6 italic leading-relaxed">
-                  Un service impeccable du début à la fin. L'équipe est intervenue rapidement pour
-                  réparer une fuite importante. Travail propre et soigné, je recommande vivement !
-                </p>
+                {manualReviews[0] && (
+                  <>
+                    <p className="text-lg font-body mb-6 italic leading-relaxed">
+                      {manualReviews[0].text}
+                    </p>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-accent/30 flex items-center justify-center text-xl font-bold font-display border-2 border-accent/50">
-                    ML
-                  </div>
-                  <div>
-                    <div className="font-semibold font-body text-lg">Marie L.</div>
-                    <div className="text-white/70 font-body text-sm">Paris 11ème</div>
-                  </div>
-                </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-full bg-accent/30 flex items-center justify-center text-xl font-bold font-display border-2 border-accent/50">
+                        {manualReviews[0].author.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="font-semibold font-body text-lg">{manualReviews[0].author}</div>
+                        {manualReviews[0].location && (
+                          <div className="text-white/70 font-body text-sm">{manualReviews[0].location}</div>
+                        )}
+                      </div>
+                    </div>
 
-                {/* Animated star rating */}
-                <div className="flex gap-1.5 mt-5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-5 h-5 text-yellow-400 fill-yellow-400 transition-all duration-500 ${
-                        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
-                      }`}
-                      style={{ transitionDelay: `${1000 + i * 100}ms` }}
-                    />
-                  ))}
-                </div>
+                    {/* Animated star rating */}
+                    <div className="flex gap-1.5 mt-5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 transition-all duration-500 ${
+                            i < manualReviews[0].rating
+                              ? 'text-yellow-400 fill-yellow-400'
+                              : 'text-white/20'
+                          } ${
+                            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+                          }`}
+                          style={{ transitionDelay: `${1000 + i * 100}ms` }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
