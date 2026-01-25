@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
-import { manualReviews, reviewStats, googleReviewsConfig, Review } from "@/config/reviews";
+import { manualReviews, reviewStats, googleReviewsConfig } from "@/config/artisan.config";
+import type { Review } from "@/config/types";
 
 interface ReviewsWidgetProps {
   showStats?: boolean;

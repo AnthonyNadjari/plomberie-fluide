@@ -6,7 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Mail, MapPin, Phone, Clock, Send, ArrowRight, MessageSquare, Zap } from "lucide-react";
-import { siteConfig } from "@/config/site";
+import { config } from "@/config/artisan.config";
+import { getTradeDisplayName } from "@/config/trade-defaults";
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -37,7 +40,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/send-email', {
+      const response = await fetch(`${API_URL}/api/send-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, type: 'contact' }),
@@ -62,33 +65,33 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Téléphone",
-      content: siteConfig.contact.phone.replace('+33', '0'),
-      link: `tel:${siteConfig.contact.phone}`,
-      description: "Disponible 24h/24",
+      content: config.contact.phoneDisplay,
+      link: `tel:${config.contact.phone}`,
+      description: `Disponible ${config.stats.availability}`,
       color: "accent"
     },
     {
       icon: Mail,
       title: "Email",
-      content: siteConfig.contact.email,
-      link: `mailto:${siteConfig.contact.email}`,
+      content: config.contact.email,
+      link: `mailto:${config.contact.email}`,
       description: "Réponse sous 24h",
       color: "primary"
     },
     {
       icon: MapPin,
       title: "Adresse",
-      content: siteConfig.address.city,
+      content: `${config.address.postalCode} ${config.address.city}`,
       link: null,
-      description: "Paris & Île-de-France",
+      description: config.address.city,
       color: "accent"
     },
     {
       icon: Clock,
       title: "Horaires",
-      content: "Lun-Ven: 8h-18h",
+      content: config.hours.regular,
       link: null,
-      description: "Urgences 24h/24",
+      description: config.hours.emergency,
       color: "primary"
     }
   ];
@@ -246,13 +249,13 @@ const Contact = () => {
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-3">
                     <Zap className="w-5 h-5" />
-                    <h3 className="font-bold text-lg font-display">Urgence plomberie ?</h3>
+                    <h3 className="font-bold text-lg font-display">Urgence {getTradeDisplayName(config.business.tradeType).toLowerCase()} ?</h3>
                   </div>
                   <p className="text-white/90 mb-4 font-body text-sm">
-                    Notre équipe est disponible 24h/24 pour vos urgences.
+                    Notre équipe est disponible {config.stats.availability} pour vos urgences.
                   </p>
                   <a
-                    href={`tel:${siteConfig.contact.phone}`}
+                    href={`tel:${config.contact.phone}`}
                     className="inline-flex items-center gap-2 bg-white text-accent px-5 py-3 rounded-xl font-semibold font-body transition-all duration-300 hover:bg-white/90 hover:scale-105 shadow-lg"
                   >
                     <Phone className="w-4 h-4" />
@@ -276,20 +279,20 @@ const Contact = () => {
                   Notre zone d'intervention
                 </CardTitle>
                 <CardDescription className="font-body">
-                  Paris et toute l'Île-de-France
+                  {config.address.city} et ses environs
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0 mt-6">
                 <div className="w-full h-[350px] relative group">
                   <iframe
-                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937596!2d${siteConfig.address.coordinates.lng}!3d${siteConfig.address.coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDUxJzMwLjEiTiAywrAyMic0NS45IkU!5e0!3m2!1sfr!2sfr!4v1234567890123!5m2!1sfr!2sfr`}
+                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937596!2d${config.address.coordinates.lng}!3d${config.address.coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDUxJzMwLjEiTiAywrAyMic0NS45IkU!5e0!3m2!1sfr!2sfr!4v1234567890123!5m2!1sfr!2sfr`}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Localisation PlombiPro"
+                    title={`Localisation ${config.business.name}`}
                     className="transition-all duration-500 group-hover:scale-[1.02]"
                   />
                   <div className="absolute inset-0 pointer-events-none border-4 border-transparent group-hover:border-accent/20 transition-all duration-500 rounded-b-lg" />

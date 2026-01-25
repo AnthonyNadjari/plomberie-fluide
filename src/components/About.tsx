@@ -1,6 +1,6 @@
 import { Award, Clock, Shield, Users, CheckCircle, Star, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { manualReviews, googleReviewsConfig } from "@/config/reviews";
+import { config, manualReviews } from "@/config/artisan.config";
 import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
 
 // Animated counter hook

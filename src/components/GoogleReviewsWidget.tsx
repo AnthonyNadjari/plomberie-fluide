@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { googleReviewsConfig } from "@/config/reviews";
+import { googleReviewsConfig } from "@/config/artisan.config";
 
 /**
  * Composant pour intégrer Google Reviews via widget Elfsight

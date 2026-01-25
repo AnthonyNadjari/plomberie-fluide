@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "mcp__mcp-registry__search_mcp_registry"
+      "mcp__mcp-registry__search_mcp_registry",
+      "Bash(dir:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(del \"C:\\\\Users\\\\nadja\\\\OneDrive\\\\Bureau\\\\code\\\\plomberie-fluide-1\\\\src\\\\config\\\\site.ts\")",
+      "Bash(del \"C:\\\\Users\\\\nadja\\\\OneDrive\\\\Bureau\\\\code\\\\plomberie-fluide-1\\\\src\\\\config\\\\reviews.ts\")",
+      "Bash(python:*)"
     ]
   }
 }

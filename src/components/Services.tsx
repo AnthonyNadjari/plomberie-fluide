@@ -1,59 +1,28 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wrench, AlertCircle, Droplets, Flame, Waves, Settings, ArrowRight, Sparkles } from "lucide-react";
-import serviceInstallation from "@/assets/service-installation.jpg";
-import serviceRepair from "@/assets/service-repair.jpg";
+import * as LucideIcons from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { config } from "@/config/artisan.config";
+import type { Service } from "@/config/types";
 
-const services = [
-  {
-    icon: AlertCircle,
-    title: "Dépannage d'urgence",
-    description: "Intervention rapide 24h/24 et 7j/7 pour tous vos problèmes urgents de plomberie.",
-    features: ["Fuite d'eau", "Canalisation bouchée", "Chauffe-eau en panne"],
-    featured: true,
-    gradient: "from-accent to-orange-600"
-  },
-  {
-    icon: Wrench,
-    title: "Installation",
-    description: "Installation professionnelle de tous vos équipements sanitaires et de chauffage.",
-    features: ["Sanitaires", "Chauffe-eau", "Robinetterie"],
-    featured: false,
-    gradient: "from-primary to-slate-700"
-  },
-  {
-    icon: Settings,
-    title: "Rénovation",
-    description: "Rénovation complète de vos salles de bains et installations sanitaires.",
-    features: ["Salle de bain", "Cuisine", "Chauffage"],
-    featured: false,
-    gradient: "from-primary to-slate-700"
-  },
-  {
-    icon: Droplets,
-    title: "Recherche de fuite",
-    description: "Détection précise et réparation de toutes fuites d'eau avec équipement moderne.",
-    features: ["Détection électronique", "Caméra thermique", "Réparation garantie"],
-    featured: false,
-    gradient: "from-primary to-slate-700"
-  },
-  {
-    icon: Flame,
-    title: "Chauffage",
-    description: "Installation, entretien et dépannage de systèmes de chauffage.",
-    features: ["Chaudière", "Radiateurs", "Plancher chauffant"],
-    featured: false,
-    gradient: "from-primary to-slate-700"
-  },
-  {
-    icon: Waves,
-    title: "Débouchage",
-    description: "Débouchage professionnel de canalisations et évacuations.",
-    features: ["WC", "Éviers", "Baignoire"],
-    featured: true,
-    gradient: "from-accent to-orange-600"
+// Dynamic icon component that gets icon by name from lucide-react
+const DynamicIcon = ({ name, className }: { name: string; className?: string }) => {
+  const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ className?: string }>>)[name];
+  if (!IconComponent) {
+    return <LucideIcons.Circle className={className} />;
   }
-];
+  return <IconComponent className={className} />;
+};
+
+// Transform config services to component format with gradient info
+const getServicesWithGradient = (services: Service[]) => {
+  return services.map((service, index) => ({
+    ...service,
+    gradient: service.featured ? "from-accent to-orange-600" : "from-primary to-slate-700"
+  }));
+};
+
+const services = getServicesWithGradient(config.services);
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -150,7 +119,7 @@ const Services = () => {
                     ? 'bg-white/20 shadow-lg shadow-white/10'
                     : 'bg-accent/10 group-hover:bg-accent/20'
                 }`}>
-                  <service.icon className={`w-7 h-7 transition-all duration-300 ${
+                  <DynamicIcon name={service.icon} className={`w-7 h-7 transition-all duration-300 ${
                     service.featured ? 'text-white' : 'text-accent'
                   }`} />
                 </div>
@@ -200,17 +169,18 @@ const Services = () => {
         </div>
 
         {/* Featured images with parallax-like hover */}
+        {config.assets.serviceImages.length > 0 && (
         <div className="grid md:grid-cols-2 gap-8">
           {[
             {
-              image: serviceInstallation,
+              image: config.assets.serviceImages[0] || "/placeholder.svg",
               title: "Installation",
               subtitle: "Équipements modernes et conformes aux normes",
               gradient: "from-primary/95 via-primary/80 to-primary/60",
               delay: 0
             },
             {
-              image: serviceRepair,
+              image: config.assets.serviceImages[1] || "/placeholder.svg",
               title: "Dépannage",
               subtitle: "Intervention rapide en moins d'une heure",
               gradient: "from-accent/95 via-accent/80 to-accent/60",
@@ -253,6 +223,7 @@ const Services = () => {
             </div>
           ))}
         </div>
+        )}
       </div>
     </section>
   );

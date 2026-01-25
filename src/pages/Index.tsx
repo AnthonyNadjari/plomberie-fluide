@@ -5,10 +5,12 @@ import About from "@/components/About";
 import Booking from "@/components/Booking";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <SEOHead />
       <Header />
       <Hero />
       <Services />

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Menu, Phone, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { config } from "@/config/artisan.config";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,12 +42,12 @@ const Header = () => {
           {/* Logo */}
           <button onClick={() => scrollToSection("accueil")} className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-              <span className="text-primary-foreground font-display font-bold text-xl">P</span>
+              <span className="text-primary-foreground font-display font-bold text-xl">{config.business.name.charAt(0)}</span>
             </div>
             <span className={`font-display font-bold text-xl transition-colors ${
               isScrolled ? 'text-foreground' : 'text-white'
             }`}>
-              PlombiPro
+              {config.business.name}
             </span>
           </button>
 
@@ -70,13 +71,13 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="tel:+33612345678"
+              href={`tel:${config.contact.phone}`}
               className={`flex items-center gap-2 font-body font-medium transition-colors ${
                 isScrolled ? 'text-foreground/70 hover:text-accent' : 'text-white/80 hover:text-white'
               }`}
             >
               <Phone className="w-4 h-4" />
-              <span>06 12 34 56 78</span>
+              <span>{config.contact.phoneDisplay}</span>
             </a>
             <Button
               onClick={() => scrollToSection("reservation")}
@@ -114,11 +115,11 @@ const Header = () => {
           ))}
           <div className="h-px bg-border my-2" />
           <a
-            href="tel:+33612345678"
+            href={`tel:${config.contact.phone}`}
             className="flex items-center gap-2 text-foreground/80 hover:text-accent px-4 py-3 font-body font-medium transition-colors"
           >
             <Phone className="w-4 h-4" />
-            <span>06 12 34 56 78</span>
+            <span>{config.contact.phoneDisplay}</span>
           </a>
           <Button
             onClick={() => scrollToSection("reservation")}

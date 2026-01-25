@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Clock, ArrowRight, ArrowUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { config } from "@/config/artisan.config";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -37,14 +38,8 @@ const Footer = () => {
     { id: "contact", label: "Contact" }
   ];
 
-  const services = [
-    "Dépannage d'urgence",
-    "Installation sanitaires",
-    "Recherche de fuite",
-    "Chauffage",
-    "Rénovation",
-    "Débouchage"
-  ];
+  // Get service titles from config
+  const services = config.services.map(s => s.title);
 
   return (
     <footer ref={footerRef} className="relative bg-primary text-primary-foreground overflow-hidden">
@@ -63,17 +58,19 @@ const Footer = () => {
           <div className={`lg:col-span-1 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/30 animate-pulse-glow">
-                <span className="text-white font-display font-bold text-2xl">P</span>
+                <span className="text-white font-display font-bold text-2xl">{config.business.name.charAt(0)}</span>
               </div>
-              <span className="font-display font-bold text-2xl text-white">PlombiPro</span>
+              <span className="font-display font-bold text-2xl text-white">{config.business.name}</span>
             </div>
             <p className="text-white/70 font-body leading-relaxed mb-6">
-              Votre expert en plomberie et chauffage depuis plus de 15 ans. Service professionnel, rapide et fiable.
+              {config.business.description.slice(0, 120)}...
             </p>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-accent font-semibold font-body text-sm">
-              <Clock className="w-4 h-4" />
-              Urgences 24h/24
-            </div>
+            {config.features.emergencyBanner && (
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-accent font-semibold font-body text-sm">
+                <Clock className="w-4 h-4" />
+                {config.hours.emergency}
+              </div>
+            )}
           </div>
 
           {/* Quick links */}
@@ -117,28 +114,28 @@ const Footer = () => {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="tel:+33612345678"
+                  href={`tel:${config.contact.phone}`}
                   className="group flex items-start gap-3 text-white/70 hover:text-accent transition-all duration-300 font-body"
                 >
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
                     <Phone className="w-5 h-5 text-accent" />
                   </div>
                   <div>
-                    <span className="block group-hover:text-white transition-colors">06 12 34 56 78</span>
-                    <span className="text-sm text-white/50">Disponible 24/7</span>
+                    <span className="block group-hover:text-white transition-colors">{config.contact.phoneDisplay}</span>
+                    <span className="text-sm text-white/50">Disponible {config.stats.availability}</span>
                   </div>
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:contact@plombipro.fr"
+                  href={`mailto:${config.contact.email}`}
                   className="group flex items-start gap-3 text-white/70 hover:text-accent transition-all duration-300 font-body"
                 >
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
                     <Mail className="w-5 h-5 text-accent" />
                   </div>
                   <div>
-                    <span className="block group-hover:text-white transition-colors">contact@plombipro.fr</span>
+                    <span className="block group-hover:text-white transition-colors">{config.contact.email}</span>
                     <span className="text-sm text-white/50">Réponse sous 24h</span>
                   </div>
                 </a>
@@ -148,8 +145,8 @@ const Footer = () => {
                   <MapPin className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <span className="block">123 Avenue de la République</span>
-                  <span className="text-sm text-white/50">75011 Paris</span>
+                  <span className="block">{config.address.street}</span>
+                  <span className="text-sm text-white/50">{config.address.postalCode} {config.address.city}</span>
                 </div>
               </li>
             </ul>
@@ -162,7 +159,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-white/50 text-sm font-body">
-            &copy; {currentYear} PlombiPro. Tous droits réservés.
+            &copy; {currentYear} {config.business.name}. Tous droits réservés.
           </p>
 
           <div className="flex items-center gap-6">

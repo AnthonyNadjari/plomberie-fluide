@@ -9,6 +9,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
 import { fr } from "date-fns/locale";
 import { CalendarDays, User, Mail, Phone, FileText, Send, CheckCircle, Clock, Sparkles } from "lucide-react";
+import { config } from "@/config/artisan.config";
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const Booking = () => {
   const [date, setDate] = useState<Date>();
@@ -53,7 +56,7 @@ const Booking = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/send-email', {
+      const response = await fetch(`${API_URL}/api/send-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -236,12 +239,11 @@ const Booking = () => {
                         <SelectValue placeholder="Sélectionnez un service" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="depannage">Dépannage d'urgence</SelectItem>
-                        <SelectItem value="installation">Installation</SelectItem>
-                        <SelectItem value="renovation">Rénovation</SelectItem>
-                        <SelectItem value="fuite">Recherche de fuite</SelectItem>
-                        <SelectItem value="chauffage">Chauffage</SelectItem>
-                        <SelectItem value="debouchage">Débouchage</SelectItem>
+                        {config.services.map((service, index) => (
+                          <SelectItem key={index} value={service.title.toLowerCase().replace(/\s+/g, '-')}>
+                            {service.title}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>

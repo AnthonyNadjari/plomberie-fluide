@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone, Shield, Clock, Award, Star, Zap, CheckCircle2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-import { reviewStats } from "@/config/reviews";
+import { config } from "@/config/artisan.config";
+import { getTradeDisplayName } from "@/config/trade-defaults";
 
 // Animated counter component
 const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number; duration?: number; suffix?: string }) => {
@@ -116,12 +117,12 @@ const Hero = () => {
               <span
                 className={`block transition-all duration-1000 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
               >
-                L'excellence en
+                {config.business.slogan.split(' ').slice(0, -1).join(' ')}
               </span>
               <span
                 className={`block relative transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
               >
-                <span className="text-gradient">plomberie</span>
+                <span className="text-gradient">{config.business.slogan.split(' ').slice(-1)[0]}</span>
                 <svg className="absolute -bottom-2 left-0 w-[280px] h-4 overflow-visible" viewBox="0 0 280 16">
                   <path
                     d="M0,12 Q70,0 140,12 T280,12"
@@ -151,7 +152,7 @@ const Hero = () => {
             <p
               className={`text-xl md:text-2xl text-white/70 mb-10 leading-relaxed font-body font-light max-w-xl transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             >
-              Plus de <span className="text-accent font-semibold">15 ans d'expertise</span> au service de votre confort.
+              Plus de <span className="text-accent font-semibold">{config.stats.experience} d'expertise</span> au service de votre confort.
               Interventions rapides, travaux soignés, satisfaction garantie.
             </p>
 
@@ -177,12 +178,12 @@ const Hero = () => {
                 asChild
                 className="group text-lg px-8 py-7 h-auto border-2 border-white/30 text-white bg-white/5 backdrop-blur-md hover:bg-white/15 hover:border-white/50 transition-all duration-500 font-semibold font-body rounded-xl btn-magnetic"
               >
-                <a href="tel:+33612345678" className="flex items-center">
+                <a href={`tel:${config.contact.phone}`} className="flex items-center">
                   <div className="relative mr-3">
                     <Phone className="w-5 h-5" />
                     <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
                   </div>
-                  06 12 34 56 78
+                  {config.contact.phoneDisplay}
                 </a>
               </Button>
             </div>
@@ -194,7 +195,7 @@ const Hero = () => {
               {[
                 { icon: Shield, title: "Garantie 2 ans", subtitle: "Sur tous travaux" },
                 { icon: Clock, title: "Intervention < 1h", subtitle: "En urgence" },
-                { icon: Star, title: `${reviewStats.averageRating} étoiles`, subtitle: `${reviewStats.totalReviews} avis` }
+                { icon: Star, title: `${config.reviews.stats.averageRating} étoiles`, subtitle: `${config.reviews.stats.totalReviews} avis` }
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -283,8 +284,8 @@ const Hero = () => {
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                   ))}
                 </div>
-                <span className="font-semibold font-body text-sm">{reviewStats.averageRating}/5</span>
-                <span className="text-white/60 text-sm font-body">({reviewStats.totalReviews} avis)</span>
+                <span className="font-semibold font-body text-sm">{config.reviews.stats.averageRating}/5</span>
+                <span className="text-white/60 text-sm font-body">({config.reviews.stats.totalReviews} avis)</span>
               </div>
             </div>
           </div>
