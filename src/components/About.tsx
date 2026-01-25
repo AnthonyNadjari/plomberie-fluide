@@ -1,143 +1,197 @@
-import { Award, Clock, Shield, Users, CheckCircle } from "lucide-react";
-import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { Award, Clock, Shield, Users, CheckCircle, Star, TrendingUp } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+// Animated counter hook
+const useCounter = (end: number, duration: number = 2000, isVisible: boolean) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(easeOutQuart * end));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isVisible, end, duration]);
+
+  return count;
+};
 
 const stats = [
-  {
-    icon: Award,
-    title: "Certifié RGE",
-    description: "Artisan qualifié et assuré"
-  },
-  {
-    icon: Clock,
-    title: "Disponible 24/7",
-    description: "Service d'urgence actif"
-  },
-  {
-    icon: Shield,
-    title: "Garantie 2 ans",
-    description: "Travaux garantis"
-  },
-  {
-    icon: Users,
-    title: "+500 clients",
-    description: "Nous font confiance"
-  }
+  { icon: Award, value: 15, suffix: "+", title: "Années", description: "d'expérience", color: "accent" },
+  { icon: Clock, value: 24, suffix: "/7", title: "Disponible", description: "pour vous", color: "primary" },
+  { icon: Shield, value: 2, suffix: " ans", title: "Garantie", description: "sur travaux", color: "accent" },
+  { icon: Users, value: 500, suffix: "+", title: "Clients", description: "satisfaits", color: "primary" }
 ];
 
 const commitments = [
-  "Devis gratuit et transparent",
-  "Équipe qualifiée et expérimentée",
-  "Matériaux de haute qualité",
-  "Respect des délais annoncés",
-  "Service après-vente réactif"
+  { text: "Devis gratuit et transparent", delay: 0 },
+  { text: "Équipe qualifiée et expérimentée", delay: 100 },
+  { text: "Matériaux de haute qualité", delay: 200 },
+  { text: "Respect des délais annoncés", delay: 300 },
+  { text: "Service après-vente réactif", delay: 400 }
 ];
 
 const About = () => {
-  const { ref: contentRef, isVisible: contentVisible } = useScrollReveal();
-  const { ref: cardsRef, isVisible: cardsVisible } = useScrollReveal({ rootMargin: "-50px" });
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="a-propos" className="py-28 bg-muted/30 relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+    <section id="a-propos" ref={sectionRef} className="py-28 bg-muted/30 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 pattern-grid" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px] animate-float -translate-y-1/4 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px] animate-float-delayed translate-y-1/4 -translate-x-1/4" />
 
       <div className="container mx-auto px-6 relative">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left content */}
-          <div
-            ref={contentRef}
-            className={`transition-all duration-700 ${contentVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
-          >
-            <span className="inline-block text-accent font-body font-semibold tracking-wider uppercase text-sm mb-4">
-              À propos
-            </span>
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
+              <TrendingUp className="w-4 h-4 text-accent" />
+              <span className="text-accent font-body font-semibold text-sm tracking-wide uppercase">À propos</span>
+            </div>
+
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8 font-display leading-tight">
-              Plus de 15 ans d'expertise à votre service
+              Plus de{" "}
+              <span className="relative inline-block">
+                <span className="text-gradient">15 ans</span>
+              </span>
+              {" "}d'expertise à votre service
             </h2>
 
             <div className="space-y-6 text-lg text-muted-foreground font-body mb-10">
-              <p>
-                Fondée sur des valeurs de qualité et de professionnalisme, notre entreprise s'est
+              <p className={`transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+                Fondée sur des valeurs de <span className="text-foreground font-medium">qualité et de professionnalisme</span>, notre entreprise s'est
                 imposée comme une référence dans le domaine de la plomberie à Paris et en Île-de-France.
               </p>
-              <p>
+              <p className={`transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
                 Notre équipe d'artisans qualifiés met son savoir-faire au service de votre confort.
                 Que ce soit pour une urgence, une installation ou une rénovation, nous garantissons
-                un travail soigné et durable.
+                un travail <span className="text-foreground font-medium">soigné et durable</span>.
               </p>
             </div>
 
-            {/* Commitments list */}
-            <div className="bg-card rounded-xl p-6 border border-border">
-              <h3 className="text-lg font-semibold text-foreground mb-4 font-display">
+            {/* Commitments with staggered animation */}
+            <div className={`bg-card rounded-2xl p-6 border border-border shadow-lg transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+              <h3 className="text-xl font-semibold text-foreground mb-5 font-display flex items-center gap-2">
+                <Shield className="w-5 h-5 text-accent" />
                 Nos engagements
               </h3>
               <ul className="space-y-3">
                 {commitments.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-3 text-muted-foreground font-body">
-                    <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
-                    {item}
+                  <li
+                    key={idx}
+                    className={`flex items-center gap-3 text-muted-foreground font-body group hover:text-foreground transition-all duration-500 ${
+                      isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-5'
+                    }`}
+                    style={{ transitionDelay: `${500 + item.delay}ms` }}
+                  >
+                    <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
+                      <CheckCircle className="w-4 h-4 text-accent" />
+                    </div>
+                    {item.text}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* Right content - Stats */}
-          <div
-            ref={cardsRef}
-            className={`transition-all duration-700 delay-200 ${cardsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}
-          >
-            {/* Stats grid */}
+          {/* Right content - Stats & Testimonial */}
+          <div className={`transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+            {/* Stats grid with animated counters */}
             <div className="grid grid-cols-2 gap-4 mb-8">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="group bg-card rounded-xl p-6 border border-border hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
-                    <stat.icon className="w-6 h-6 text-accent" />
+              {stats.map((stat, index) => {
+                const count = useCounter(stat.value, 2000, isVisible);
+                return (
+                  <div
+                    key={index}
+                    className={`group bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl cursor-default ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    }`}
+                    style={{ transitionDelay: `${300 + index * 100}ms` }}
+                  >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 ${
+                      stat.color === 'accent' ? 'bg-accent/10 group-hover:bg-accent/20' : 'bg-primary/10 group-hover:bg-primary/20'
+                    }`}>
+                      <stat.icon className={`w-6 h-6 ${stat.color === 'accent' ? 'text-accent' : 'text-primary'}`} />
+                    </div>
+
+                    <div className={`text-3xl font-bold mb-1 font-display transition-all duration-300 group-hover:scale-110 ${
+                      stat.color === 'accent' ? 'text-accent' : 'text-foreground'
+                    }`}>
+                      {count}{stat.suffix}
+                    </div>
+
+                    <div className="text-foreground font-semibold font-body">{stat.title}</div>
+                    <div className="text-sm text-muted-foreground font-body">{stat.description}</div>
                   </div>
-                  <h3 className="font-bold text-foreground text-lg mb-1 font-display">
-                    {stat.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground font-body">
-                    {stat.description}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* Testimonial card */}
-            <div className="bg-primary rounded-xl p-8 text-primary-foreground relative overflow-hidden">
+            {/* Testimonial card with animations */}
+            <div
+              className={`relative bg-primary rounded-2xl p-8 text-primary-foreground overflow-hidden transition-all duration-700 delay-700 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              {/* Animated background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-[hsl(220,55%,22%)] to-primary opacity-50" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-accent/20 rounded-full blur-3xl animate-float" />
+
               {/* Decorative quote */}
-              <div className="absolute top-4 right-4 text-8xl font-display text-white/10 leading-none">
+              <div className="absolute top-4 right-6 text-[120px] font-display text-white/5 leading-none select-none">
                 "
               </div>
 
-              <p className="text-lg font-body mb-6 relative z-10 italic">
-                Un service impeccable du début à la fin. L'équipe est intervenue rapidement pour
-                réparer une fuite importante. Travail propre et soigné, je recommande vivement !
-              </p>
+              <div className="relative z-10">
+                <p className="text-lg font-body mb-6 italic leading-relaxed">
+                  Un service impeccable du début à la fin. L'équipe est intervenue rapidement pour
+                  réparer une fuite importante. Travail propre et soigné, je recommande vivement !
+                </p>
 
-              <div className="flex items-center gap-4 relative z-10">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                  <span className="font-bold font-display text-lg">ML</span>
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-full bg-accent/30 flex items-center justify-center text-xl font-bold font-display border-2 border-accent/50">
+                    ML
+                  </div>
+                  <div>
+                    <div className="font-semibold font-body text-lg">Marie L.</div>
+                    <div className="text-white/70 font-body text-sm">Paris 11ème</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-semibold font-body">Marie L.</div>
-                  <div className="text-sm text-white/70 font-body">Paris 11ème</div>
-                </div>
-              </div>
 
-              {/* Star rating */}
-              <div className="flex gap-1 mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
+                {/* Animated star rating */}
+                <div className="flex gap-1.5 mt-5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 text-yellow-400 fill-yellow-400 transition-all duration-500 ${
+                        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+                      }`}
+                      style={{ transitionDelay: `${1000 + i * 100}ms` }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
